@@ -1,12 +1,16 @@
+import java.util.ArrayList;
+
 public class TrackingRow {
 	private Range range;
 	private Character statusCode;
 	private Integer transferCode;
+	private boolean deleted;
 
 	public TrackingRow(Range range, Character statusCode, Integer transferCode) {
 		this.range = range;
 		this.statusCode = statusCode;
 		this.transferCode = transferCode;
+		deleted =  false ; 
 	}
 
 	public Range getRange() {
@@ -35,5 +39,17 @@ public class TrackingRow {
 
 	public Range.Relation classify(TrackingRow tr) {
 		return getRange().classify(tr.getRange());
+	}
+	
+	public void addRow(ArrayList<TrackingRow> table,TrackingRow newEntry) {
+		for( TrackingRow tableEntry : table) {
+			 Range.Relation relation = tableEntry.classify(newEntry);
+			 
+			 if( relation == Range.Relation.SUBSET ) {
+				 
+			 }
+			 
+			 
+		}
 	}
 }
