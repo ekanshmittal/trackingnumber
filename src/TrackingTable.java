@@ -16,7 +16,7 @@ public class TrackingTable {
 	}
 
 	public void displayTable() {
-		for(TrackingRow row:table){
+		for (TrackingRow row : table) {
 			System.out.println(row.getRange().toString() + " "
 					+ row.getStatusCode() + " " + row.getTransferCode());
 		}
