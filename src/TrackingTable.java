@@ -12,7 +12,15 @@ public class TrackingTable {
 	}
 
 	public void addRow(TrackingRow row) {
-		table.add(row);
+		for( TrackingRow tableEntry : table) {
+			 Range.Relation relation = tableEntry.classify(row);
+			 
+			 if( relation == Range.Relation.SUBSET ) {
+				 
+			 }
+			 
+			 
+		}
 	}
 
 	public void displayTable() {
