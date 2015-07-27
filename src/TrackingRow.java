@@ -1,9 +1,9 @@
-public class TrackingRange {
+public class TrackingRow {
 	private Range range;
 	private Character statusCode;
 	private Integer transferCode;
 
-	public TrackingRange(Range range, Character statusCode, Integer transferCode) {
+	public TrackingRow(Range range, Character statusCode, Integer transferCode) {
 		this.range = range;
 		this.statusCode = statusCode;
 		this.transferCode = transferCode;
@@ -33,7 +33,7 @@ public class TrackingRange {
 		this.transferCode = transferCode;
 	}
 
-	public Range.Relation classify(TrackingRange tr) {
+	public Range.Relation classify(TrackingRow tr) {
 		return getRange().classify(tr.getRange());
 	}
 }
