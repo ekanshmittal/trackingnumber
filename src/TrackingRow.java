@@ -46,7 +46,7 @@ public class TrackingRow {
 		 ArrayList<TrackingRow> copyList = new ArrayList<TrackingRow>();
 		 copyList = table;
 		for( TrackingRow tableEntry : table) {
-			 Range.Relation relation = newEntry.classify(tableEntry);
+			 Range.Relation relation = tableEntry.classify(newEntry);
 			 
 			 if( relation == Range.Relation.SUBSET ) {
 				 if(isEqual(newEntry))
