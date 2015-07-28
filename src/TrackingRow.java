@@ -50,10 +50,10 @@ public class TrackingRow {
 					 newEntry.deleted = true;
 					 
 					 else{
-						 tableEntry.range.hi = newEntry.range.lo - 1;
-						 Range newRange = new Range(newEntry.range.hi+1,tableEntry.hi)
+						 tableEntry.getRange().hi = newEntry.getRange().lo - 1;
+						 Range newRange = new Range(newEntry.getRange().hi+1,tableEntry.getRange().hi)
 						 TrackingRow splitEntry = new TrackingRow(newRange,tableEntry.statusCode,tableEntry.transferCode);
-						 ArrayList<TrackingRow> copyList = new ArrayList<TrackingRow>;
+						 ArrayList<TrackingRow> copyList = new ArrayList<TrackingRow>();
 						 copyList = table;
 						 copyList.add(splitEntry);
 						 copyList.add(newEntry);
