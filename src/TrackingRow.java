@@ -42,6 +42,9 @@ public class TrackingRow {
 	}
 	
 	public void addRow(ArrayList<TrackingRow> table,TrackingRow newEntry) {
+		
+		 ArrayList<TrackingRow> copyList = new ArrayList<TrackingRow>();
+		 copyList = table;
 		for( TrackingRow tableEntry : table) {
 			 Range.Relation relation = newEntry.classify(tableEntry);
 			 
@@ -53,11 +56,10 @@ public class TrackingRow {
 						 tableEntry.getRange().hi = newEntry.getRange().lo - 1;
 						 Range newRange = new Range(newEntry.getRange().hi+1,tableEntry.getRange().hi)
 						 TrackingRow splitEntry = new TrackingRow(newRange,tableEntry.statusCode,tableEntry.transferCode);
-						 ArrayList<TrackingRow> copyList = new ArrayList<TrackingRow>();
-						 copyList = table;
+						
 						 copyList.add(splitEntry);
 						 copyList.add(newEntry);
-						 table = copyList;
+						 
 					 }		
 				 
 			 }
