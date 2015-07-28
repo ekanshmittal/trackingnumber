@@ -62,9 +62,17 @@ public class TrackingRow {
 				 
 			 }
 			 if( relation == Range.Relation.LESSOVERLAP ){
-				 add
+				 
+			 }	
+			 if(relation == Range.Relation.SAME){
+				 if(isEqual(newEntry)){
+					 statusCode=newEntry.statusCode;
+					 transferCode=newEntry.transferCode;
+				 }
 			 }
-			 
-		}
+		}	
+	}
+	public boolean isEqual(TrackingRow tr){
+		return statusCode == tr.statusCode  &&  transferCode == tr.transferCode;
 	}
 }
