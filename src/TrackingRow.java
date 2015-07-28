@@ -69,12 +69,22 @@ public class TrackingRow {
 			if (relation == Range.Relation.SUPERSET) {
 			}
 			if (relation == Range.Relation.LESSOVERLAP) {
-
+				if (isEqual(newEntry)) {
+					listIterator.set(new TrackingRow(newRange(
+							tableEntry.getRange().lo, newEntry.getRange().hi),
+							newEntry.statusCode, newEntry.transferCode));
+				} else {
+					listIterator.set(new TrackingRow(newRange(
+							tableEntry.getRange().lo,
+							newEntry.getRange().lo - 1), tableEntry.statusCode,
+							tableEntry.transferCode));
+					listIterator.add(newEntry);
+				}
 			}
 			if (relation == Range.Relation.SAME) {
-				if (isEqual(newEntry)) {
-					statusCode = newEntry.statusCode;
-					transferCode = newEntry.transferCode;
+				if (!isEqual(newEntry)) {
+					listIterator.set(new TrackingRow(newEntry.getRange(),
+							newEntry.statusCode, newEntry.transferCode));
 				}
 			}
 		}
@@ -82,5 +92,9 @@ public class TrackingRow {
 
 	public boolean isEqual(TrackingRow tr) {
 		return statusCode == tr.statusCode && transferCode == tr.transferCode;
+	}
+
+	public Range newRange(int lo, int hi) {
+		return new Range(lo, hi);
 	}
 }
