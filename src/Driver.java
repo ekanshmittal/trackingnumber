@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class Driver {
 	@Test
-	public void testAddRow(String[] args) {
+	public void testAddRow() {
 		String input;
 		ArrayList<TrackingRow> table = new ArrayList<TrackingRow>();
 		for (int i = 0; i < 5; i++) {
