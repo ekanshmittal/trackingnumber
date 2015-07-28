@@ -1,8 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.junit.Test;
+
 public class Driver {
-	public static void main(String[] args) {
+	@Test
+	public void testAddRow(String[] args) {
 		String input;
 		ArrayList<TrackingRow> table = new ArrayList<TrackingRow>();
 		for (int i = 0; i < 5; i++) {
