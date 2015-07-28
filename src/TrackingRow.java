@@ -46,14 +46,18 @@ public class TrackingRow {
 			 Range.Relation relation = newEntry.classify(tableEntry);
 			 
 			 if( relation == Range.Relation.SUBSET ) {
-				 if(newEntry.statusCode == tableEntry.statusCode  &&  newEntry.transferCode == tableEntry.transferCode)
+				 if(isEqual(newEntry))
 					 newEntry.deleted = true;
 					 
 					 else{
 						 tableEntry.range.hi = newEntry.range.lo - 1;
 						 Range newRange = new Range(newEntry.range.hi+1,tableEntry.hi)
 						 TrackingRow splitEntry = new TrackingRow(newRange,tableEntry.statusCode,tableEntry.transferCode);
-						 ArrayList<TrackingRow> copyList = new 
+						 ArrayList<TrackingRow> copyList = new ArrayList<TrackingRow>;
+						 copyList = table;
+						 copyList.add(splitEntry);
+						 copyList.add(newEntry);
+						 table = copyList;
 					 }		
 				 
 			 }
