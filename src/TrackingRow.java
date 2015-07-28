@@ -47,46 +47,96 @@ public class TrackingRow {
 		ListIterator<TrackingRow> listIterator = table.listIterator();
 		while (listIterator.hasNext()) {
 			TrackingRow tableEntry = listIterator.next();
+			if (tableEntry.deleted) {
+				continue;
+			}
 			Range.Relation relation = tableEntry.classify(newEntry);
 
 			if (relation == Range.Relation.SUBSET) {
-				if (isEqual(newEntry))
-					newEntry.deleted = true;
-
-				else {
-					tableEntry.getRange().hi = newEntry.getRange().lo - 1;
-					Range newRange = new Range(newEntry.getRange().hi + 1,
-							tableEntry.getRange().hi);
-					TrackingRow splitEntry = new TrackingRow(newRange,
-							tableEntry.statusCode, tableEntry.transferCode);
-
-					copyList.add(splitEntry);
-					copyList.add(newEntry);
-
-				}
+				handleSubsetRelation(newEntry, listIterator, tableEntry);
 
 			}
 			if (relation == Range.Relation.SUPERSET) {
+				handleSupersetRelation(newEntry, listIterator, tableEntry);
 			}
 			if (relation == Range.Relation.LESSOVERLAP) {
-				if (isEqual(newEntry)) {
-					listIterator.set(new TrackingRow(newRange(
-							tableEntry.getRange().lo, newEntry.getRange().hi),
-							newEntry.statusCode, newEntry.transferCode));
-				} else {
-					listIterator.set(new TrackingRow(newRange(
-							tableEntry.getRange().lo,
-							newEntry.getRange().lo - 1), tableEntry.statusCode,
-							tableEntry.transferCode));
-					listIterator.add(newEntry);
-				}
+				handleLessOverlapRelation(newEntry, listIterator, tableEntry);
+			}
+			if (relation == Range.Relation.MOREOVERLAP) {
+				handleMoreOverlapRelation(newEntry, listIterator, tableEntry);
+			}
+			if (relation == Range.Relation.LESSDISJOINT
+					|| relation == Range.Relation.MOREDISJOINT) {
+				handleDisjointRelation(newEntry, listIterator);
 			}
 			if (relation == Range.Relation.SAME) {
-				if (!isEqual(newEntry)) {
-					listIterator.set(new TrackingRow(newEntry.getRange(),
-							newEntry.statusCode, newEntry.transferCode));
-				}
+				handleSameRelation(newEntry, listIterator, tableEntry);
 			}
+		}
+	}
+
+	private void handleSubsetRelation(TrackingRow newEntry,
+			ListIterator<TrackingRow> listIterator, TrackingRow tableEntry) {
+		if (!tableEntry.isEqual(newEntry)) {
+			tableEntry.deleted = true;
+			listIterator.add(new TrackingRow(newRange(
+					tableEntry.getRange().lo,
+					newEntry.getRange().lo - 1), tableEntry
+					.getStatusCode(), tableEntry.getTransferCode()));
+			listIterator.add(new TrackingRow(newRange(
+					newEntry.getRange().hi + 1,
+					tableEntry.getRange().hi), tableEntry
+					.getStatusCode(), tableEntry.getTransferCode()));
+			handleDisjointRelation(newEntry, listIterator);
+		}
+	}
+
+	private void handleSupersetRelation(TrackingRow newEntry,
+			ListIterator<TrackingRow> listIterator, TrackingRow tableEntry) {
+		tableEntry.deleted = true;
+		handleDisjointRelation(newEntry, listIterator);
+	}
+
+	private void handleLessOverlapRelation(TrackingRow newEntry,
+			ListIterator<TrackingRow> listIterator, TrackingRow tableEntry) {
+		if (tableEntry.isEqual(newEntry)) {
+			listIterator.set(new TrackingRow(newRange(
+					tableEntry.getRange().lo, newEntry.getRange().hi),
+					newEntry.statusCode, newEntry.transferCode));
+		} else {
+			listIterator.set(new TrackingRow(newRange(
+					tableEntry.getRange().lo,
+					newEntry.getRange().lo - 1), tableEntry.statusCode,
+					tableEntry.transferCode));
+			handleDisjointRelation(newEntry, listIterator);
+		}
+	}
+
+	private void handleMoreOverlapRelation(TrackingRow newEntry,
+			ListIterator<TrackingRow> listIterator, TrackingRow tableEntry) {
+		if (tableEntry.isEqual(newEntry)) {
+			listIterator.set(new TrackingRow(newRange(
+					newEntry.getRange().lo, tableEntry.getRange().hi),
+					newEntry.statusCode, newEntry.transferCode));
+		} else {
+			listIterator.set(new TrackingRow(newRange(
+					newEntry.getRange().hi + 1,
+					tableEntry.getRange().hi), tableEntry.statusCode,
+					tableEntry.transferCode));
+			handleDisjointRelation(newEntry, listIterator);
+		}
+	}
+
+	private void handleDisjointRelation(TrackingRow newEntry,
+			ListIterator<TrackingRow> listIterator) {
+		listIterator.add(newEntry);
+	}
+
+	private void handleSameRelation(TrackingRow newEntry,
+			ListIterator<TrackingRow> listIterator, TrackingRow tableEntry) {
+		if (!tableEntry.isEqual(newEntry)) {
+			listIterator.set(new TrackingRow(newEntry.getRange(),
+					newEntry.statusCode, newEntry.transferCode));
 		}
 	}
 
