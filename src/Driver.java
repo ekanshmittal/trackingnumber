@@ -1,12 +1,15 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Driver {
 	public static void main(String[] args) {
 		String input;
+		ArrayList<TrackingRow> table = new ArrayList<TrackingRow>();
 		for (int i = 0; i < 5; i++) {
 			Scanner scanner = new Scanner(System.in);
 			input = scanner.next();
 			TrackingRow row = getTrackingRow(input);
+			row.addRow(table, row);
 		}
 	}
 
