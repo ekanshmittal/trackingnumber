@@ -37,6 +37,14 @@ public class TrackingRow {
 	public void setTransferCode(Integer transferCode) {
 		this.transferCode = transferCode;
 	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public Range.Relation classify(TrackingRow tr) {
 		return getRange().classify(tr.getRange());
@@ -87,14 +95,14 @@ public class TrackingRow {
 					newEntry.getRange().hi + 1,
 					tableEntry.getRange().hi), tableEntry
 					.getStatusCode(), tableEntry.getTransferCode()));
-			handleDisjointRelation(newEntry, listIterator);
+			listIterator.add(newEntry);
 		}
 	}
 
 	private void handleSupersetRelation(TrackingRow newEntry,
 			ListIterator<TrackingRow> listIterator, TrackingRow tableEntry) {
 		tableEntry.deleted = true;
-		handleDisjointRelation(newEntry, listIterator);
+		listIterator.add(newEntry);
 	}
 
 	private void handleLessOverlapRelation(TrackingRow newEntry,
@@ -108,7 +116,7 @@ public class TrackingRow {
 					tableEntry.getRange().lo,
 					newEntry.getRange().lo - 1), tableEntry.statusCode,
 					tableEntry.transferCode));
-			handleDisjointRelation(newEntry, listIterator);
+			listIterator.add(newEntry);
 		}
 	}
 
@@ -123,7 +131,7 @@ public class TrackingRow {
 					newEntry.getRange().hi + 1,
 					tableEntry.getRange().hi), tableEntry.statusCode,
 					tableEntry.transferCode));
-			handleDisjointRelation(newEntry, listIterator);
+			listIterator.add(newEntry);
 		}
 	}
 
